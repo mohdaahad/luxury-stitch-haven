@@ -19,24 +19,32 @@ export interface Product {
 interface ProductCardProps {
   product: Product;
   index: number;
+  onAddToCart?: (e: React.MouseEvent) => void;
+  onAddToWishlist?: (e: React.MouseEvent) => void;
 }
 
-const ProductCard: React.FC<ProductCardProps> = ({ product, index }) => {
+const ProductCard: React.FC<ProductCardProps> = ({ product, index, onAddToCart, onAddToWishlist }) => {
   const [isHovered, setIsHovered] = useState(false);
   const { ref, isVisible } = useElementOnScreen({ threshold: 0.1 });
   
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Add to cart:', product.id);
-    // Add cart logic here
+    if (onAddToCart) {
+      onAddToCart(e);
+    } else {
+      console.log('Add to cart:', product.id);
+    }
   };
   
   const handleAddToWishlist = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Add to wishlist:', product.id);
-    // Add wishlist logic here
+    if (onAddToWishlist) {
+      onAddToWishlist(e);
+    } else {
+      console.log('Add to wishlist:', product.id);
+    }
   };
   
   const calculateDiscountedPrice = () => {
